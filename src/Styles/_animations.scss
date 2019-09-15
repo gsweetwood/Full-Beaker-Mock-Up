@@ -1,0 +1,15 @@
+//* Slide saved image link list up from bottom of mobile screen
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(150%);
+    font-size: 3rem;
+    color: green;
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    font-size: 1.3rem;
+    color: black;
+    opacity: 1;
+  }
+}

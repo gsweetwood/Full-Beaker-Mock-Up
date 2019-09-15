@@ -10,8 +10,17 @@ function App() {
     JSON.parse(localStorage.getItem("savedImages")) || []
   );
 
+  //* Add picture to state, does not allow duplicates
   const handleSaveImage = imageObject => {
-    setSavedImages([...savedImages, imageObject]);
+    if (!savedImages.includes(imageObject)) {
+      setSavedImages([...savedImages, imageObject]);
+    }
+  };
+
+  //* Clear state and localStorage of all pictures
+  const clearSavedImages = () => {
+    localStorage.clear();
+    setSavedImages([]);
   };
 
   //* Set savedImages to localStorage for persistance
@@ -22,7 +31,10 @@ function App() {
   return (
     <div className="app">
       <ImageSearch handleSaveImage={handleSaveImage} />
-      <SavedImages savedImages={savedImages} />
+      <SavedImages
+        savedImages={savedImages}
+        clearSavedImages={clearSavedImages}
+      />
     </div>
   );
 }

@@ -1,12 +1,16 @@
+@import "animations";
+
 body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Comfortaa", cursive;
 }
 
 .app {
   display: grid;
   grid-template-columns: 75% 25%;
+  min-height: 100vh;
 }
 
 //* Image Search Section
@@ -16,7 +20,8 @@ body {
   flex-direction: column;
   padding: 50px 15%;
   align-items: center;
-  border-right: solid gray 2px;
+  box-shadow: 5px 1px 5px gray;
+  text-align: center;
 
   form {
     display: flex;
@@ -32,14 +37,23 @@ body {
     border-radius: 5px;
     height: 50px;
     color: gray;
+    font-size: 2rem;
+    padding-left: 30px;
   }
 
   button {
-    background-color: blue;
+    background-color: rgb(0, 98, 255);
     color: white;
-    :hover {
-      cursor: pointer;
-    }
+    padding-left: 0;
+  }
+
+  button:hover,
+  select:hover {
+    cursor: pointer;
+  }
+
+  option {
+    font-size: 1.5rem;
   }
 }
 
@@ -59,24 +73,53 @@ body {
   align-items: center;
   grid-row-start: 1;
   grid-row-end: 3;
+  height: 100%;
+  width: 100%;
+  position: relative;
   :hover {
     cursor: pointer;
   }
 }
-.tags {
+
+img {
+  width: 99%;
+  height: 99%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.label-saved {
+  background-color: rgb(190, 16, 147);
+  color: white;
+  width: 99%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 2px 0;
+  position: absolute;
+  bottom: 0;
+}
+
+.label-not-saved {
+  display: none;
+}
+
+.tag-container {
   grid-column: 2 3;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
   flex-wrap: wrap;
   padding: 10px 0;
+  margin: 5px;
 }
 
 .tag {
   background-color: teal;
   color: white;
   padding: 2px 5px;
+  border-radius: 3px;
 }
+
 .likes {
   grid-column-start: 2;
   grid-column-end: 3;
@@ -85,12 +128,14 @@ body {
   align-items: flex-end;
   justify-content: space-evenly;
   padding: 10px 0;
+  font-size: 1.3rem;
 }
 
-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+.icon {
+  height: 25px;
+  width: 25px;
+  object-fit: fill;
+  margin: 0 10px;
 }
 
 //* Saved Image Links Section
@@ -102,4 +147,64 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+
+  a {
+    margin: 10px;
+    font-size: 40px;
+    color: black;
+    text-decoration: none;
+    opacity: 0;
+    animation-name: slideInFromBottom;
+    animation-duration: 1.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+  }
+}
+
+.clear-images {
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 10px 0 5px 0;
+}
+
+//* MOBILE CSS
+@media screen and (max-width: 850px) {
+  .image-search {
+    width: 100%;
+    box-shadow: none;
+    flex-shrink: 1;
+
+    input,
+    select,
+    button {
+      min-width: 90%;
+      width: 90%;
+    }
+  }
+
+  .image-item {
+    flex-shrink: 1;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .saved-images {
+    position: fixed;
+    width: 90%;
+    right: 5%;
+    margin: auto;
+    background-color: rgba(218, 114, 54, 0.527);
+    border-radius: 10px;
+    transition: 1s ease;
+  }
+
+  .is-closed {
+    top: 92%;
+  }
+
+  .is-open {
+    top: 20%;
+    background-color: rgba(218, 114, 54, 0.842);
+  }
 }

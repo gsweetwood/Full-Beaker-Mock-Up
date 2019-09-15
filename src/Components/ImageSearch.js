@@ -3,6 +3,7 @@ import ImageItem from "./ImageItem";
 
 const ImageSearch = props => {
   //* Local constants
+  //* Categories to be as options for filtering
   const CATEGORIES = [
     "fashion",
     "nature",
@@ -32,8 +33,10 @@ const ImageSearch = props => {
   const [searchResults, setSearchResults] = useState([]);
 
   //* Input handlers
+
+  //* Set searchTerm state, not case sensitive and remove whitespace REQUIREMENT
   const handleSearchTermChange = event => {
-    setSearchTerm(event.target.value.toLowerCase().trim());
+    setSearchTerm(event.target.value);
   };
 
   const handleCategorySelection = event => {
@@ -44,21 +47,25 @@ const ImageSearch = props => {
   const handleSubmit = async event => {
     //* Prevent page refresh and validate user typed a term and chose a category
     event.preventDefault();
-    if (searchTerm === "") {
-      alert(`Please provide a search term. Maybe cats...`);
-      return;
+    try {
+      if (searchTerm === "") {
+        alert(`Please provide a search term. Maybe cats...`);
+        return;
+      }
+      if (category === "") {
+        alert(`Please choose a category.`);
+        return;
+      }
+      const searchQuery = searchTerm.toLowerCase().trim();
+      const response = await fetch(
+        `https://pixabay.com/api/?key=13136421-266c28a6d61717bc2e4e6a83e&q=${searchQuery}&category=${category}&per_page=10`
+      );
+      const json = await response.json();
+      setSearchResults(json.hits);
+      localStorage.setItem("searchResults", JSON.stringify(searchResults));
+    } catch (err) {
+      console.log(err);
     }
-    if (category === "") {
-      alert(`Please choose a category.`);
-      return;
-    }
-
-    const response = await fetch(
-      `https://pixabay.com/api/?key=13136421-266c28a6d61717bc2e4e6a83e&q=${searchTerm}&category=${category}&per_page=10`
-    );
-    const json = await response.json();
-    setSearchResults(json.hits);
-    localStorage.setItem("searchResults", JSON.stringify(searchResults));
   };
 
   return (
@@ -71,7 +78,6 @@ const ImageSearch = props => {
           onChange={handleSearchTermChange}
         ></input>
         <select value={category} onChange={handleCategorySelection}>
-          //* List all the categories, display a nonusable 'category' option
           <option value="" disabled>
             Category...
           </option>
@@ -86,19 +92,22 @@ const ImageSearch = props => {
         <button onClick={handleSubmit}>SEARCH</button>
       </form>
       {searchResults.length > 0 ? (
-        searchResults.map(result => {
-          return (
-            <ImageItem
-              key={result.id}
-              imageObject={result}
-              handleSaveImage={props.handleSaveImage}
-              searchTerm={searchTerm}
-            />
-          );
-        })
+        <h2>Click any image to save it!</h2>
       ) : (
-        <h4>Try searching for an image!</h4>
+        <h2>Try searching for an image!</h2>
       )}
+      {searchResults.length > 0
+        ? searchResults.map(result => {
+            return (
+              <ImageItem
+                key={result.id}
+                imageObject={result}
+                handleSaveImage={props.handleSaveImage}
+                searchTerm={searchTerm}
+              />
+            );
+          })
+        : null}
     </section>
   );
 };
