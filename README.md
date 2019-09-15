@@ -2,6 +2,8 @@
 
 ## By Garret Sweetwood
 
+Want to see the site in action? Go here -> https://jovial-mcclintock-eb27b2.netlify.com
+
 Below is a simple diagram of the components in this mock up
 ![diagram](./mock-up-diagram.PNG)
 
